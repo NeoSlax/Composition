@@ -19,11 +19,11 @@ import com.neoslax.composition.domain.entity.Level
 class GameFragment : Fragment() {
 
     private lateinit var level: Level
+    private val viewModelFactory by lazy {
+        GameViewModelFactory(level, requireActivity().application)
+    }
     private val viewModel: GameViewModel by lazy {
-        ViewModelProvider(
-            this,
-            ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
-        )[GameViewModel::class.java]
+        ViewModelProvider(this, viewModelFactory)[GameViewModel::class.java]
     }
     private val tvOptionsList by lazy {
         mutableListOf<TextView>().apply {
@@ -65,7 +65,6 @@ class GameFragment : Fragment() {
 
         setupListeners()
         setupObservers()
-        viewModel.startGame(level)
 
 
     }
