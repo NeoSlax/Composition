@@ -8,12 +8,16 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.neoslax.composition.R
 import com.neoslax.composition.databinding.FragmentGameBinding
 import com.neoslax.composition.databinding.FragmentGameFinishedBinding
 import com.neoslax.composition.domain.entity.GameResult
 
 class GameFinishedFragment : Fragment() {
+
+    private val args: GameFinishedFragmentArgs by navArgs()
 
     private lateinit var gameResult: GameResult
 
@@ -66,13 +70,7 @@ class GameFinishedFragment : Fragment() {
     }
 
     private fun setupListeners() {
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    retryGame()
-                }
-            })
+
         binding.buttonRetry.setOnClickListener {
             retryGame()
         }
@@ -87,16 +85,11 @@ class GameFinishedFragment : Fragment() {
     }
 
     private fun parseArgs() {
-        requireArguments().getParcelable<GameResult>(KEY_GAME_RESULT)?.let {
-            gameResult = it
-        }
+        gameResult = args.gameResult
     }
 
     private fun retryGame() {
-        requireActivity().supportFragmentManager.popBackStack(
-            GameFragment.NAME,
-            FragmentManager.POP_BACK_STACK_INCLUSIVE
-        )
+        findNavController().popBackStack()
     }
 
     override fun onDestroyView() {
@@ -104,16 +97,5 @@ class GameFinishedFragment : Fragment() {
         _binding = null
     }
 
-    companion object {
 
-        private const val KEY_GAME_RESULT = "game_result_key"
-
-        fun newInstance(gameResult: GameResult): GameFinishedFragment {
-            return GameFinishedFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(KEY_GAME_RESULT, gameResult)
-                }
-            }
-        }
-    }
 }
