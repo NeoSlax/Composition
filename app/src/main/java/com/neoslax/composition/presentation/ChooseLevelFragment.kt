@@ -30,9 +30,9 @@ class ChooseLevelFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         with(binding) {
-            buttonLevelTest.setOnClickListener {
-                launchGameInMode(Level.TEST)
-            }
+//            buttonLevelTest.setOnClickListener {
+//                launchGameInMode(Level.TEST)
+//            }
             buttonLevelEasy.setOnClickListener {
                 launchGameInMode(Level.EASY)
             }
