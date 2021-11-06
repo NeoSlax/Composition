@@ -1,7 +1,8 @@
-package com.neoslax.composition
+package com.neoslax.composition.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.neoslax.composition.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
