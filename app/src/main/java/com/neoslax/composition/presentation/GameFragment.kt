@@ -55,7 +55,8 @@ class GameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         setupListeners()
         setupObservers()
 
@@ -63,44 +64,8 @@ class GameFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        with(viewModel) {
-            timer.observe(viewLifecycleOwner) {
-                binding.tvTimer.text = it
-            }
-
-            question.observe(viewLifecycleOwner) {
-                for (i in 0 until tvOptionsList.size) {
-                    tvOptionsList[i].text = it.option[i].toString()
-                }
-                binding.tvSum.text = it.sum.toString()
-                binding.tvLeftNumber.text = it.visibleNumber.toString()
-
-
-            }
-            progressAnswers.observe(viewLifecycleOwner) {
-                binding.tvAnswersProgress.text = it
-            }
-            percentOfRightAnswers.observe(viewLifecycleOwner) {
-                binding.progressBar.setProgress(it, true)
-            }
-            minPercent.observe(viewLifecycleOwner) {
-                binding.progressBar.secondaryProgress = it
-            }
-
-            enoughCount.observe(viewLifecycleOwner) {
-
-                val color = getStateProgressColor(it)
-                binding.tvAnswersProgress.setTextColor(color)
-            }
-            enoughPercent.observe(viewLifecycleOwner) {
-                val color = getStateProgressColor(it)
-                binding.progressBar.progressTintList = ColorStateList.valueOf(color)
-            }
-
-            gameResult.observe(viewLifecycleOwner) {
-                launchGameFinishFragment(it)
-            }
-
+        viewModel.gameResult.observe(viewLifecycleOwner) {
+            launchGameFinishFragment(it)
         }
     }
 
